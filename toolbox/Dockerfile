@@ -1,22 +1,18 @@
 # @IMAGE toolbox
-# @VERSION 20170613-1
+# @VERSION 20170613-3
 
-FROM ubuntu
+FROM alpine
 
-RUN echo "dependencies v1" && \
-    export DEBIAN_FRONTEND=noninteractive && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends  \
+RUN apk add --no-cache \
+      bash \
+      bind-tools \
       curl \
-      dnsutils \
       emacs-nox \
       git \
-      locales \
       mc \
+      openssh-client \
       openssl \
       postgresql-client \
-      ssh \
-      wget \
-    && \
-    rm -rf /var/lib/apt/lists/* && \
-    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+      wget
+
+CMD /bin/bash
