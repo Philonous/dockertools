@@ -1,5 +1,5 @@
 # @IMAGE toolbox
-# @VERSION 20170613-3
+# @VERSION 20190211-1
 
 FROM alpine
 
@@ -13,6 +13,7 @@ RUN apk add --no-cache \
       openssh-client \
       openssl \
       postgresql-client \
-      wget
+      wget \
+      xz
 
 CMD /bin/bash
