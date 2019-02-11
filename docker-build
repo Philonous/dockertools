@@ -3,7 +3,7 @@
 set -e
 
 fail () {
-    echo $@
+    echo "$@"
     exit 1
 }
 
@@ -22,16 +22,16 @@ dockerfile=$(realpath $dockerfile)
 # Get docker image name and tag from lines looking like this:
 # # @IMAGE <image-name>
 # # @VERSION <tag>
-IMAGENAME=$(awk '/^#[ ]+@IMAGE[ ]+[^ ]+/ {print $3; exit}' < $dockerfile)
+IMAGENAME=$(awk '/^#[ ]+@IMAGE[ ]+[^ ]+/ {print $3; exit}' < "$dockerfile")
 [[ -n $IMAGENAME ]] || fail "No image name found"
 
-TAG=$(awk '/^#[ ]+@VERSION[ ]+[^ ]+/ {print $3; exit}' < $dockerfile)
+TAG=$(awk '/^#[ ]+@VERSION[ ]+[^ ]+/ {print $3; exit}' < "$dockerfile")
 [[ -n $TAG ]] || fail "No version information found."
 
 if [[ -z $(docker images -q "$IMAGENAME:$TAG" 2> /dev/null) ]]; then
   echo "Building docker image $IMAGENAME:$TAG"
-  folder=$(dirname $(realpath $dockerfile))
-  docker build -t "$IMAGENAME:$TAG" -f $dockerfile --force-rm $folder
+  folder=$(dirname "$(realpath "$dockerfile")")
+  docker build -t "$IMAGENAME:$TAG" -f "$dockerfile" --force-rm "$folder"
 else
   echo "Image $IMAGENAME:$TAG already exists, skipping."
 fi
